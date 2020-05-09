@@ -8,7 +8,9 @@ namespace LineApi.ResponseObjects.MessageObject.TemplateObject
     {
         [JsonProperty(PropertyName = "type")] public string Type => "confirm";
         [JsonProperty(PropertyName = "text")] public string Text { get; }
-        [JsonProperty(PropertyName = "actions")] public IEnumerable<IActionObject> Actions { get; }
+
+        [JsonProperty(PropertyName = "actions")]
+        public IEnumerable<IActionObject> Actions { get; }
 
         public ConfirmTemplate(string text, IEnumerable<IActionObject> actions)
         {

@@ -6,8 +6,11 @@ namespace LineApi.ResponseObjects
 {
     public class ResponseMessage
     {
-        [JsonProperty(PropertyName = "replyToken")] public string ReplyToken { get; set; }
-        [JsonProperty(PropertyName = "messages")] public List<IMessageObject> Messages { get; set; }
+        [JsonProperty(PropertyName = "replyToken")]
+        public string ReplyToken { get; set; }
+
+        [JsonProperty(PropertyName = "messages")]
+        public List<IMessageObject> Messages { get; set; }
 
         // [JsonProperty(PropertyName = "notificationDisabled")] public bool NotificationDisabled { get; set; }
 
