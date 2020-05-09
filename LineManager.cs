@@ -12,7 +12,7 @@ namespace LineApi
 {
     public static class LineManager
     {
-        public static void Reply(string replyToken, List<IMessageObject> messages)
+        public static void Reply(string replyToken, IEnumerable<IMessageObject> messages)
         {
             var accessToken = Environment.GetEnvironmentVariable("LINE_CHANNEL_ACCESS_TOKEN");
             var client = new ServiceCollection().AddHttpClient().BuildServiceProvider().GetService<IHttpClientFactory>()

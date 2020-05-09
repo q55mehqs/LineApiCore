@@ -9,6 +9,6 @@ namespace LineApi
         public string? Destination { get; set; }
 
         [JsonProperty(PropertyName = "events")]
-        public List<object>? Events { get; set; }
+        public IEnumerable<object>? Events { get; set; }
     }
 }

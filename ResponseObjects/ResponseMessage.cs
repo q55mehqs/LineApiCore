@@ -10,11 +10,11 @@ namespace LineApi.ResponseObjects
         public string ReplyToken { get; set; }
 
         [JsonProperty(PropertyName = "messages")]
-        public List<IMessageObject> Messages { get; set; }
+        public IEnumerable<IMessageObject> Messages { get; set; }
 
-        // [JsonProperty(PropertyName = "notificationDisabled")] public bool NotificationDisabled { get; set; }
+        [JsonProperty(PropertyName = "notificationDisabled")] public bool NotificationDisabled { get; set; }
 
-        public ResponseMessage(string replyToken, List<IMessageObject> messages)
+        public ResponseMessage(string replyToken, IEnumerable<IMessageObject> messages)
         {
             ReplyToken = replyToken;
             Messages = messages;
