@@ -21,7 +21,10 @@ namespace LineApi
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
 
             var requestItem = new ResponseMessage(replyToken, messages);
-            var bodyJson = JsonConvert.SerializeObject(requestItem);
+            var bodyJson = JsonConvert.SerializeObject(requestItem, Formatting.None,
+                new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
+
+            Console.WriteLine(bodyJson);
 
             var content = new StringContent(bodyJson, Encoding.UTF8, "application/json");
             var resultTask = client.PostAsync("https://api.line.me/v2/bot/message/reply", content);
@@ -45,6 +48,28 @@ namespace LineApi
             if (!response.IsSuccessStatusCode) return null;
             var resultJson = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Dictionary<string, string>>(resultJson);
+        }
+
+        public static async Task Push(string to, IEnumerable<IMessageObject> messages)
+        {
+            var accessToken = Environment.GetEnvironmentVariable("LINE_CHANNEL_ACCESS_TOKEN");
+            var client = new ServiceCollection().AddHttpClient().BuildServiceProvider().GetService<IHttpClientFactory>()
+                .CreateClient();
+            client.DefaultRequestHeaders.Add("ContentType", "application/json");
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+
+            var requestItem = new PushMessage(to, messages);
+            var bodyJson = JsonConvert.SerializeObject(requestItem, Formatting.None,
+                new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
+
+            var content = new StringContent(bodyJson, Encoding.UTF8, "application/json");
+            var result = await client.PostAsync("https://api.line.me/v2/bot/message/push", content);
+
+            if (result.IsSuccessStatusCode) return;
+
+            var errorBodyTask = result.Content.ReadAsStringAsync();
+            errorBodyTask.Wait();
+            throw new Exception(errorBodyTask.Result);
         }
     }
 }
