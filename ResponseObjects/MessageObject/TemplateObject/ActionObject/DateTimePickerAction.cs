@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace LineApi.ResponseObjects.MessageObject.TemplateObject.ActionObject
 {
@@ -9,7 +10,10 @@ namespace LineApi.ResponseObjects.MessageObject.TemplateObject.ActionObject
         [JsonProperty(PropertyName = "type")] public string Type => "datetimepicker";
         [JsonProperty(PropertyName = "label")] public string? Label { get; set; }
         [JsonProperty(PropertyName = "data")] public string Data { get; set; }
-        [JsonProperty(PropertyName = "mode")] public DateTimePickerMode Mode { get; set; }
+
+        [JsonProperty(PropertyName = "mode")]
+        [JsonConverter(typeof(StringEnumConverter))]
+        public DateTimePickerMode Mode { get; set; }
 
         [JsonProperty(PropertyName = "initial")]
         public string? Initial { get; set; }
@@ -20,13 +24,13 @@ namespace LineApi.ResponseObjects.MessageObject.TemplateObject.ActionObject
         /// <summary>
         /// ImageCarouselTemplate でのみ利用可
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="data">ポストバックで返される文字列</param>
         /// <param name="mode"></param>
         /// <param name="initial">(省略可能) 日付または時刻の初期値</param>
-        /// <param name="max">(省略可能) 選択可能な日付または時刻の最大値。minの値より大きい必要があります。</param>
         /// <param name="min">(省略可能) 選択可能な日付または時刻の最小値。maxの値より小さい必要があります。</param>
+        /// <param name="max">(省略可能) 選択可能な日付または時刻の最大値。minの値より大きい必要があります。</param>
         public DateTimePickerAction(string data, DateTimePickerMode mode, DateTime? initial = null,
-            DateTime? max = null, DateTime? min = null)
+            DateTime? min = null, DateTime? max = null)
         {
             Data = data;
             Mode = mode;
@@ -51,10 +55,10 @@ namespace LineApi.ResponseObjects.MessageObject.TemplateObject.ActionObject
         /// <param name="data"></param>
         /// <param name="mode"></param>
         /// <param name="initial">(省略可能) 日付または時刻の初期値</param>
-        /// <param name="max">(省略可能) 選択可能な日付または時刻の最大値。minの値より大きい必要があります。</param>
         /// <param name="min">(省略可能) 選択可能な日付または時刻の最小値。maxの値より小さい必要があります。</param>
+        /// <param name="max">(省略可能) 選択可能な日付または時刻の最大値。minの値より大きい必要があります。</param>
         public DateTimePickerAction(string label, string data, DateTimePickerMode mode, DateTime? initial = null,
-            DateTime? max = null, DateTime? min = null)
+            DateTime? min = null, DateTime? max = null)
         {
             Label = label;
             Data = data;
