@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace LineApi.WebhookEventObject.SenderSource
+namespace LineApi.WebhookEventObject
 {
     public class SourceObject
     {
