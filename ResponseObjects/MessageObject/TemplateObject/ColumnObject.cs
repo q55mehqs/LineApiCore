@@ -27,7 +27,7 @@ namespace LineApi.ResponseObjects.MessageObject.TemplateObject
             Actions = actions;
         }
 
-        public static IEnumerable<ColumnObject> ClassListColumns(string command)
+        public static IEnumerable<ColumnObject> ClassListColumns(string command, bool useAs = true)
         {
             var columns = new List<ColumnObject>();
             var grade1Actions = new[]
@@ -48,6 +48,15 @@ namespace LineApi.ResponseObjects.MessageObject.TemplateObject
                 };
                 columns.Add(new ColumnObject($"{i}学年", gradeActions));
             }
+
+            if (!useAs) return columns;
+            var asActions = new IActionObject[]
+            {
+                new MessageAction("AS4", $">> {command} AS4"),
+                new MessageAction("AS5", $">> {command} AS5"),
+                new UriAction("押すなよ！！", "https://www.sendai-nct.ac.jp/")
+            };
+            columns.Add(new ColumnObject("応用科学コース", asActions));
 
             return columns;
         }
