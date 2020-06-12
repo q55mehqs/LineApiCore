@@ -12,7 +12,8 @@ namespace LineApi
 {
     public static class LineManager
     {
-        public static void Reply(string replyToken, IEnumerable<IMessageObject> messages)
+        public static void Reply(string replyToken, IEnumerable<IMessageObject> messages,
+            bool notificationDisabled = false)
         {
             var accessToken = Environment.GetEnvironmentVariable("LINE_CHANNEL_ACCESS_TOKEN");
             var client = new ServiceCollection().AddHttpClient().BuildServiceProvider().GetService<IHttpClientFactory>()
@@ -20,7 +21,10 @@ namespace LineApi
             client.DefaultRequestHeaders.Add("ContentType", "application/json");
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
 
-            var requestItem = new ResponseMessage(replyToken, messages);
+            var requestItem = new ResponseMessage(replyToken, messages)
+            {
+                NotificationDisabled = notificationDisabled
+            };
             var bodyJson = JsonConvert.SerializeObject(requestItem, Formatting.None,
                 new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
 
