@@ -50,6 +50,32 @@ namespace LineApi
             return JsonConvert.DeserializeObject<Dictionary<string, string>>(resultJson);
         }
 
+        public static async Task<GroupInformation?> GroupSummary(string groupId)
+        {
+            var accessToken = Environment.GetEnvironmentVariable("LINE_CHANNEL_ACCESS_TOKEN");
+            var client = new ServiceCollection().AddHttpClient().BuildServiceProvider().GetService<IHttpClientFactory>()
+                .CreateClient();
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+
+            var response = await client.GetAsync($"https://api.line.me/v2/bot/group/{groupId}/summary");
+            if (!response.IsSuccessStatusCode) return null;
+
+            var resultJson = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<GroupInformation>(resultJson);
+        }
+
+        public class GroupInformation
+        {
+            [JsonProperty(PropertyName = "groupId")]
+            public string GroupId { get; set; } = null!;
+
+            [JsonProperty(PropertyName = "groupName")]
+            public string GroupName { get; set; } = null!;
+
+            [JsonProperty(PropertyName = "pictureUrl")]
+            public string PictureUrl { get; set; } = null!;
+        }
+
         public static async Task Push(string to, IEnumerable<IMessageObject> messages)
         {
             var accessToken = Environment.GetEnvironmentVariable("LINE_CHANNEL_ACCESS_TOKEN");
