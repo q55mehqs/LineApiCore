@@ -37,7 +37,7 @@ namespace LineApi
             throw new Exception(errorBodyTask.Result);
         }
 
-        public static async Task<Dictionary<string, string>?> Profile(string userId)
+        public static async Task<ProfileInformation?> Profile(string userId)
         {
             var accessToken = Environment.GetEnvironmentVariable("LINE_CHANNEL_ACCESS_TOKEN");
             var client = new ServiceCollection().AddHttpClient().BuildServiceProvider().GetService<IHttpClientFactory>()
@@ -47,7 +47,7 @@ namespace LineApi
             var response = await client.GetAsync($"https://api.line.me/v2/bot/profile/{userId}");
             if (!response.IsSuccessStatusCode) return null;
             var resultJson = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<Dictionary<string, string>>(resultJson);
+            return JsonConvert.DeserializeObject<ProfileInformation>(resultJson);
         }
 
         public static async Task<GroupInformation?> GroupSummary(string groupId)
@@ -62,18 +62,6 @@ namespace LineApi
 
             var resultJson = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<GroupInformation>(resultJson);
-        }
-
-        public class GroupInformation
-        {
-            [JsonProperty(PropertyName = "groupId")]
-            public string GroupId { get; set; } = null!;
-
-            [JsonProperty(PropertyName = "groupName")]
-            public string GroupName { get; set; } = null!;
-
-            [JsonProperty(PropertyName = "pictureUrl")]
-            public string PictureUrl { get; set; } = null!;
         }
 
         public static async Task Push(string to, IEnumerable<IMessageObject> messages)
