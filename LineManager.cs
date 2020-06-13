@@ -33,11 +33,10 @@ namespace LineApi
             var content = new StringContent(bodyJson, Encoding.UTF8, "application/json");
             var resultTask = client.PostAsync("https://api.line.me/v2/bot/message/reply", content);
 
-            resultTask.Wait();
-            if (resultTask.Result.IsSuccessStatusCode) return;
+            var res = resultTask.Result;
+            if (res.IsSuccessStatusCode) return;
 
-            var errorBodyTask = resultTask.Result.Content.ReadAsStringAsync();
-            errorBodyTask.Wait();
+            var errorBodyTask = res.Content.ReadAsStringAsync();
             throw new Exception(errorBodyTask.Result);
         }
 
@@ -86,7 +85,6 @@ namespace LineApi
             if (result.IsSuccessStatusCode) return;
 
             var errorBodyTask = result.Content.ReadAsStringAsync();
-            errorBodyTask.Wait();
             throw new Exception(errorBodyTask.Result);
         }
     }
