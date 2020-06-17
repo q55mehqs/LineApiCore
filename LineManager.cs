@@ -87,5 +87,30 @@ namespace LineApi
             var errorBodyTask = result.Content.ReadAsStringAsync();
             throw new Exception(errorBodyTask.Result);
         }
+
+        public static async Task Multicast(IEnumerable<string> to, IEnumerable<IMessageObject> messages,
+            bool notificationDisabled = false)
+        {
+            var accessToken = Environment.GetEnvironmentVariable("LINE_CHANNEL_ACCESS_TOKEN");
+            var client = new ServiceCollection().AddHttpClient().BuildServiceProvider().GetService<IHttpClientFactory>()
+                .CreateClient();
+            client.DefaultRequestHeaders.Add("ContentType", "application/json");
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+
+            var requestItem = new MultiCastMessage(to, messages)
+            {
+                NotificationDisabled = notificationDisabled
+            };
+            var bodyJson = JsonConvert.SerializeObject(requestItem, Formatting.None,
+                new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
+            
+            var content = new StringContent(bodyJson, Encoding.UTF8, "application/json");
+            var result = await client.PostAsync("https://api.line.me/v2/bot/message/multicast", content);
+            
+            if (result.IsSuccessStatusCode) return;
+
+            var errorMessage = await result.Content.ReadAsStringAsync();
+            throw new Exception(errorMessage);
+        }
     }
 }
