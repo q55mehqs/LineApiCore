@@ -12,7 +12,7 @@ namespace LineApi
 {
     public static class LineManager
     {
-        public static void Reply(string replyToken, IEnumerable<IMessageObject> messages,
+        public static async Task Reply(string replyToken, IEnumerable<IMessageObject> messages,
             bool notificationDisabled = false)
         {
             var accessToken = Environment.GetEnvironmentVariable("LINE_CHANNEL_ACCESS_TOKEN");
@@ -31,9 +31,8 @@ namespace LineApi
             Console.WriteLine(bodyJson);
 
             var content = new StringContent(bodyJson, Encoding.UTF8, "application/json");
-            var resultTask = client.PostAsync("https://api.line.me/v2/bot/message/reply", content);
+            var res = await client.PostAsync("https://api.line.me/v2/bot/message/reply", content);
 
-            var res = resultTask.Result;
             if (res.IsSuccessStatusCode) return;
 
             var errorBodyTask = res.Content.ReadAsStringAsync();
