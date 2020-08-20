@@ -27,6 +27,13 @@ namespace LineApi.ResponseObjects.MessageObject.TemplateObject
             Actions = actions;
         }
 
+        public ColumnObject(string title, string text, IEnumerable<IActionObject> actions)
+        {
+            Title = title;
+            Text = text;
+            Actions = actions;
+        }
+
         public static IEnumerable<ColumnObject> ClassListColumns(string command, bool useAs = true,
             string asColumnText = "応用科学コース", IActionObject? asFooter = null)
         {
