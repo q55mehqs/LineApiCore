@@ -102,10 +102,10 @@ namespace LineApi
             };
             var bodyJson = JsonConvert.SerializeObject(requestItem, Formatting.None,
                 new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
-            
+
             var content = new StringContent(bodyJson, Encoding.UTF8, "application/json");
             var result = await client.PostAsync("https://api.line.me/v2/bot/message/multicast", content);
-            
+
             if (result.IsSuccessStatusCode) return;
 
             var errorMessage = await result.Content.ReadAsStringAsync();
