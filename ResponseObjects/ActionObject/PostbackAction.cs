@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace LineApi.ResponseObjects.MessageObject.TemplateObject.ActionObject
+namespace LineApi.ResponseObjects.ActionObject
 {
     public class PostbackAction : IActionObject
     {

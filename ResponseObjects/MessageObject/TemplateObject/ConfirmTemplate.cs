@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using LineApi.ResponseObjects.MessageObject.TemplateObject.ActionObject;
+using LineApi.ResponseObjects.ActionObject;
 using Newtonsoft.Json;
 
 namespace LineApi.ResponseObjects.MessageObject.TemplateObject

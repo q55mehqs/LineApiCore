@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using LineApi.ResponseObjects.MessageObject.TemplateObject.ActionObject;
+using LineApi.ResponseObjects.ActionObject;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;

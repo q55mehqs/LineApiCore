@@ -1,4 +1,4 @@
-namespace LineApi.ResponseObjects.MessageObject.TemplateObject.ActionObject
+namespace LineApi.ResponseObjects.ActionObject
 {
     public interface IActionObject
     {
